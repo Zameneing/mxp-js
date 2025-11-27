@@ -107,6 +107,48 @@ for (const token of generateTokens()) {
 const closeMsg = toMxpStreamClose(streamId);
 ```
 
+### WebRTC Transport (Peer-to-Peer)
+
+```typescript
+import { WebRTCTransport, WebSocketSignaling } from '@mxp/protocol/transport';
+import { Message } from '@mxp/protocol';
+
+// Connect to signaling server
+const signaling = new WebSocketSignaling('ws://signal.example.com', 'my-peer-id');
+await signaling.connect();
+
+// Create transport
+const transport = new WebRTCTransport(signaling, { debug: true });
+
+// Handle incoming messages
+transport.on('message', ({ message, peerId }) => {
+  console.log(`From ${peerId}: ${message.payloadAsString()}`);
+});
+
+// Connect to another peer
+await transport.connect('other-peer-id');
+
+// Send a message
+transport.send('other-peer-id', Message.call('Hello!'));
+
+// Broadcast to all peers
+transport.broadcast(Message.call('Hello everyone!'));
+```
+
+#### Signaling Options
+
+```typescript
+// WebSocket signaling (cross-device)
+const ws = new WebSocketSignaling('ws://server/signal', 'peer-id');
+
+// BroadcastChannel (same-origin, different tabs)
+const bc = new BroadcastChannelSignaling('my-channel', 'peer-id');
+
+// In-memory (testing)
+const hub = new InMemorySignalingHub();
+const provider = hub.createProvider('peer-id');
+```
+
 ## API Reference
 
 ### Core Module (`@mxp/protocol`)
@@ -134,6 +176,18 @@ const closeMsg = toMxpStreamClose(streamId);
 | `fromMxp(mxp)` | Convert MXP → A2A |
 | `JsonRpcRequest` | JSON-RPC request |
 | `JsonRpcResponse` | JSON-RPC response |
+
+### Transport Module (`@mxp/protocol/transport`)
+
+| Export | Description |
+|--------|-------------|
+| `WebRTCTransport` | Peer-to-peer transport |
+| `Peer` | Single peer connection |
+| `WebSocketSignaling` | WebSocket signaling |
+| `BroadcastChannelSignaling` | Same-origin signaling |
+| `InMemorySignalingHub` | Testing signaling |
+| `ConnectionState` | Connection states |
+| `ChannelMode` | Reliable/unreliable modes |
 
 ## Compatibility
 

@@ -26,6 +26,9 @@ export { encode, decode, encodeHeader, decodeHeader } from './codec';
 export { generateTraceId, generateMessageId } from './utils';
 export type { MessageHeader, EncodedMessage } from './types';
 
+// Re-export transport (for convenience)
+export * from './transport';
+
 // Version info
 export const VERSION = '0.1.0';
 export const PROTOCOL_VERSION = 1;

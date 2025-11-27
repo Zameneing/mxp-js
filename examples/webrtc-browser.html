@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MXP WebRTC Chat</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 1rem 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      color: #58a6ff;
+    }
+
+    .header .subtitle {
+      color: #8b949e;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .panel {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .chat-panel {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .peers-panel {
+      flex: 1;
+      max-width: 300px;
+    }
+
+    .panel-header {
+      font-size: 0.875rem;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem 0;
+      min-height: 400px;
+    }
+
+    .message {
+      margin-bottom: 0.75rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+      background: #0d1117;
+    }
+
+    .message .from {
+      color: #58a6ff;
+      font-weight: bold;
+      font-size: 0.75rem;
+    }
+
+    .message .content {
+      margin-top: 0.25rem;
+    }
+
+    .message.system {
+      color: #8b949e;
+      font-style: italic;
+      background: transparent;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    input, button {
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+
+    input {
+      flex: 1;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 0.75rem;
+      color: #c9d1d9;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #58a6ff;
+    }
+
+    button {
+      background: #238636;
+      border: none;
+      border-radius: 4px;
+      padding: 0.75rem 1.5rem;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: #2ea043;
+    }
+
+    button.secondary {
+      background: #21262d;
+      border: 1px solid #30363d;
+    }
+
+    button.secondary:hover {
+      background: #30363d;
+    }
+
+    .peer-list {
+      list-style: none;
+    }
+
+    .peer-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      background: #0d1117;
+    }
+
+    .peer-item .status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #238636;
+    }
+
+    .peer-item .status.disconnected {
+      background: #f85149;
+    }
+
+    .connect-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .my-id {
+      background: #0d1117;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      word-break: break-all;
+    }
+
+    .my-id label {
+      display: block;
+      font-size: 0.75rem;
+      color: #8b949e;
+      margin-bottom: 0.25rem;
+    }
+
+    .my-id code {
+      color: #7ee787;
+    }
+
+    .stats {
+      font-size: 0.75rem;
+      color: #8b949e;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #30363d;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🚀 MXP WebRTC Chat</h1>
+    <div class="subtitle">Peer-to-peer messaging over MXP protocol</div>
+  </div>
+
+  <div class="container">
+    <div class="panel chat-panel">
+      <div class="panel-header">Messages</div>
+      <div class="messages" id="messages">
+        <div class="message system">Welcome! Connect to a peer to start chatting.</div>
+      </div>
+      <div class="input-area">
+        <input type="text" id="messageInput" placeholder="Type a message..." disabled>
+        <button id="sendBtn" disabled>Send</button>
+      </div>
+    </div>
+
+    <div class="panel peers-panel">
+      <div class="panel-header">Connection</div>
+      
+      <div class="my-id">
+        <label>Your Peer ID</label>
+        <code id="myPeerId">Generating...</code>
+      </div>
+
+      <div class="panel-header">Peers</div>
+      <ul class="peer-list" id="peerList">
+        <li class="message system">No peers connected</li>
+      </ul>
+
+      <div class="connect-form">
+        <input type="text" id="peerIdInput" placeholder="Peer ID to connect">
+        <button id="connectBtn" class="secondary">Connect</button>
+      </div>
+
+      <div class="stats" id="stats">
+        Messages: 0 sent, 0 received
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // This would use the bundled MXP library
+    // import { Message, WebRTCTransport, BroadcastChannelSignaling } from '@mxp/protocol';
+
+    // For demo, we'll simulate the MXP message structure
+    class Message {
+      constructor(type, payload) {
+        this.type = type;
+        this.payload = payload;
+        this.traceId = Math.random().toString(36).slice(2);
+      }
+
+      static call(text) {
+        return new Message('call', text);
+      }
+
+      payloadAsString() {
+        return this.payload;
+      }
+    }
+
+    // Generate peer ID
+    const myPeerId = 'peer-' + Math.random().toString(36).slice(2, 10);
+    document.getElementById('myPeerId').textContent = myPeerId;
+
+    // Stats
+    let stats = { sent: 0, received: 0 };
+
+    // DOM elements
+    const messagesEl = document.getElementById('messages');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const peerIdInput = document.getElementById('peerIdInput');
+    const connectBtn = document.getElementById('connectBtn');
+    const peerListEl = document.getElementById('peerList');
+    const statsEl = document.getElementById('stats');
+
+    // Peers
+    const peers = new Map();
+
+    // BroadcastChannel for same-origin signaling
+    const signalChannel = new BroadcastChannel('mxp-webrtc-demo');
+
+    // Handle signaling messages
+    signalChannel.onmessage = async (event) => {
+      const msg = event.data;
+      if (msg.to !== myPeerId) return;
+
+      console.log('Signaling:', msg.type, 'from', msg.from);
+
+      if (msg.type === 'offer') {
+        await handleOffer(msg.from, msg.payload);
+      } else if (msg.type === 'answer') {
+        await handleAnswer(msg.from, msg.payload);
+      } else if (msg.type === 'ice-candidate') {
+        await handleIceCandidate(msg.from, msg.payload);
+      }
+    };
+
+    // Create peer connection
+    function createPeerConnection(peerId) {
+      const pc = new RTCPeerConnection({
+        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+      });
+
+      pc.onicecandidate = (event) => {
+        if (event.candidate) {
+          signalChannel.postMessage({
+            type: 'ice-candidate',
+            from: myPeerId,
+            to: peerId,
+            payload: event.candidate.toJSON()
+          });
+        }
+      };
+
+      pc.onconnectionstatechange = () => {
+        console.log(`Connection state with ${peerId}:`, pc.connectionState);
+        updatePeerList();
+      };
+
+      return pc;
+    }
+
+    // Connect to peer
+    async function connectToPeer(peerId) {
+      addMessage('system', `Connecting to ${peerId}...`);
+
+      const pc = createPeerConnection(peerId);
+      const dc = pc.createDataChannel('mxp');
+      
+      setupDataChannel(dc, peerId);
+      peers.set(peerId, { pc, dc, state: 'connecting' });
+
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+
+      signalChannel.postMessage({
+        type: 'offer',
+        from: myPeerId,
+        to: peerId,
+        payload: offer
+      });
+
+      updatePeerList();
+    }
+
+    // Handle incoming offer
+    async function handleOffer(peerId, offer) {
+      addMessage('system', `Incoming connection from ${peerId}`);
+
+      const pc = createPeerConnection(peerId);
+      
+      pc.ondatachannel = (event) => {
+        setupDataChannel(event.channel, peerId);
+        peers.get(peerId).dc = event.channel;
+      };
+
+      peers.set(peerId, { pc, dc: null, state: 'connecting' });
+
+      await pc.setRemoteDescription(new RTCSessionDescription(offer));
+      const answer = await pc.createAnswer();
+      await pc.setLocalDescription(answer);
+
+      signalChannel.postMessage({
+        type: 'answer',
+        from: myPeerId,
+        to: peerId,
+        payload: answer
+      });
+
+      updatePeerList();
+    }
+
+    // Handle answer
+    async function handleAnswer(peerId, answer) {
+      const peer = peers.get(peerId);
+      if (peer) {
+        await peer.pc.setRemoteDescription(new RTCSessionDescription(answer));
+      }
+    }
+
+    // Handle ICE candidate
+    async function handleIceCandidate(peerId, candidate) {
+      const peer = peers.get(peerId);
+      if (peer) {
+        await peer.pc.addIceCandidate(new RTCIceCandidate(candidate));
+      }
+    }
+
+    // Setup data channel
+    function setupDataChannel(dc, peerId) {
+      dc.onopen = () => {
+        console.log(`Data channel open with ${peerId}`);
+        addMessage('system', `✅ Connected to ${peerId}`);
+        const peer = peers.get(peerId);
+        if (peer) peer.state = 'connected';
+        updatePeerList();
+        enableChat();
+      };
+
+      dc.onclose = () => {
+        addMessage('system', `❌ Disconnected from ${peerId}`);
+        const peer = peers.get(peerId);
+        if (peer) peer.state = 'disconnected';
+        updatePeerList();
+      };
+
+      dc.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        stats.received++;
+        updateStats();
+        addMessage(peerId, msg.payload);
+      };
+    }
+
+    // Send message
+    function sendMessage(text) {
+      const msg = Message.call(text);
+      const json = JSON.stringify({ type: msg.type, payload: msg.payload, traceId: msg.traceId });
+
+      for (const [peerId, peer] of peers) {
+        if (peer.dc && peer.dc.readyState === 'open') {
+          peer.dc.send(json);
+          stats.sent++;
+        }
+      }
+
+      addMessage(myPeerId + ' (you)', text);
+      updateStats();
+    }
+
+    // UI helpers
+    function addMessage(from, content) {
+      const div = document.createElement('div');
+      div.className = 'message' + (from === 'system' ? ' system' : '');
+      
+      if (from !== 'system') {
+        div.innerHTML = `<div class="from">${from}</div><div class="content">${content}</div>`;
+      } else {
+        div.textContent = content;
+      }
+      
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function updatePeerList() {
+      if (peers.size === 0) {
+        peerListEl.innerHTML = '<li class="message system">No peers connected</li>';
+        return;
+      }
+
+      peerListEl.innerHTML = '';
+      for (const [peerId, peer] of peers) {
+        const li = document.createElement('li');
+        li.className = 'peer-item';
+        li.innerHTML = `
+          <span>${peerId}</span>
+          <span class="status ${peer.state !== 'connected' ? 'disconnected' : ''}"></span>
+        `;
+        peerListEl.appendChild(li);
+      }
+    }
+
+    function updateStats() {
+      statsEl.textContent = `Messages: ${stats.sent} sent, ${stats.received} received`;
+    }
+
+    function enableChat() {
+      messageInput.disabled = false;
+      sendBtn.disabled = false;
+    }
+
+    // Event listeners
+    connectBtn.addEventListener('click', () => {
+      const peerId = peerIdInput.value.trim();
+      if (peerId && peerId !== myPeerId) {
+        connectToPeer(peerId);
+        peerIdInput.value = '';
+      }
+    });
+
+    peerIdInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') connectBtn.click();
+    });
+
+    sendBtn.addEventListener('click', () => {
+      const text = messageInput.value.trim();
+      if (text) {
+        sendMessage(text);
+        messageInput.value = '';
+      }
+    });
+
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendBtn.click();
+    });
+
+    console.log('MXP WebRTC Chat initialized. Peer ID:', myPeerId);
+    console.log('Open this page in another tab and connect using the Peer ID!');
+  </script>
+</body>
+</html>
+
