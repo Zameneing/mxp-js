@@ -4,6 +4,7 @@ export default defineConfig({
   entry: {
     index: 'src/index.ts',
     'a2a/index': 'src/a2a/index.ts',
+    'transport/index': 'src/transport/index.ts',
   },
   format: ['cjs', 'esm'],
   dts: true,

@@ -15,6 +15,11 @@
       "import": "./dist/a2a/index.mjs",
       "require": "./dist/a2a/index.js",
       "types": "./dist/a2a/index.d.ts"
+    },
+    "./transport": {
+      "import": "./dist/transport/index.mjs",
+      "require": "./dist/transport/index.js",
+      "types": "./dist/transport/index.d.ts"
     }
   },
   "files": [
