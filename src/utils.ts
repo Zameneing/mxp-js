@@ -2,6 +2,27 @@
  * Utility functions for MXP
  */
 
+// Cross-platform crypto support (Node.js and browsers)
+// In Node.js 19+, globalThis.crypto is available
+// In older Node.js, we need to use the crypto module
+let cryptoImpl: Crypto;
+
+if (typeof globalThis.crypto !== 'undefined' && globalThis.crypto.getRandomValues) {
+  cryptoImpl = globalThis.crypto;
+} else {
+  // Node.js environment - use require for sync loading
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const nodeCrypto = require('node:crypto');
+  cryptoImpl = nodeCrypto.webcrypto as Crypto;
+}
+
+/**
+ * Get random values (cross-platform)
+ */
+function getRandomValues(buffer: Uint8Array): Uint8Array {
+  return cryptoImpl.getRandomValues(buffer);
+}
+
 /**
  * Generate a random trace ID (64-bit)
  *
@@ -9,7 +30,7 @@
  */
 export function generateTraceId(): bigint {
   const buffer = new Uint8Array(8);
-  crypto.getRandomValues(buffer);
+  getRandomValues(buffer);
   return bytesToBigInt(buffer);
 }
 
@@ -18,7 +39,7 @@ export function generateTraceId(): bigint {
  */
 export function generateMessageId(): bigint {
   const buffer = new Uint8Array(8);
-  crypto.getRandomValues(buffer);
+  getRandomValues(buffer);
   return bytesToBigInt(buffer);
 }
 
@@ -61,7 +82,7 @@ export function xxhash64(data: Uint8Array): bigint {
 
   for (let i = 0; i < data.length; i++) {
     hash ^= BigInt(data[i]) * prime1;
-    hash = (hash & mask64);
+    hash = hash & mask64;
     hash = (((hash << 31n) | (hash >> 33n)) * prime2) & mask64;
   }
 
@@ -81,4 +102,3 @@ export function formatTraceId(traceId: bigint): string {
 export function parseTraceId(hex: string): bigint {
   return BigInt('0x' + hex);
 }
-
