@@ -1,0 +1,81 @@
+/**
+ * Utility functions for MXP
+ */
+
+/**
+ * Generate a random trace ID (64-bit)
+ *
+ * Uses crypto.getRandomValues for secure randomness.
+ */
+export function generateTraceId(): bigint {
+  const buffer = new Uint8Array(8);
+  crypto.getRandomValues(buffer);
+  return bytesToBigInt(buffer);
+}
+
+/**
+ * Generate a random message ID (64-bit)
+ */
+export function generateMessageId(): bigint {
+  const buffer = new Uint8Array(8);
+  crypto.getRandomValues(buffer);
+  return bytesToBigInt(buffer);
+}
+
+/**
+ * Convert Uint8Array to BigInt (little-endian)
+ */
+export function bytesToBigInt(bytes: Uint8Array): bigint {
+  let result = 0n;
+  for (let i = bytes.length - 1; i >= 0; i--) {
+    result = (result << 8n) | BigInt(bytes[i]);
+  }
+  return result;
+}
+
+/**
+ * Convert BigInt to Uint8Array (little-endian)
+ */
+export function bigIntToBytes(value: bigint, length: number): Uint8Array {
+  const bytes = new Uint8Array(length);
+  for (let i = 0; i < length; i++) {
+    bytes[i] = Number(value & 0xffn);
+    value >>= 8n;
+  }
+  return bytes;
+}
+
+/**
+ * Simple XXHash3-like hash for checksums
+ *
+ * Note: This is a simplified implementation. For production,
+ * consider using a proper XXHash3 library.
+ */
+export function xxhash64(data: Uint8Array): bigint {
+  // Simplified hash - in production use xxhash-wasm or similar
+  let hash = 0n;
+  const prime1 = 11400714785074694791n;
+  const prime2 = 14029467366897019727n;
+
+  for (let i = 0; i < data.length; i++) {
+    hash ^= BigInt(data[i]) * prime1;
+    hash = ((hash << 31n) | (hash >> 33n)) * prime2;
+  }
+
+  return hash;
+}
+
+/**
+ * Format a trace ID as hex string
+ */
+export function formatTraceId(traceId: bigint): string {
+  return traceId.toString(16).padStart(16, '0');
+}
+
+/**
+ * Parse a hex trace ID string to BigInt
+ */
+export function parseTraceId(hex: string): bigint {
+  return BigInt('0x' + hex);
+}
+

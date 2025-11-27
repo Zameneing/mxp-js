@@ -1,0 +1,22 @@
+# Source
+src/
+tests/
+examples/
+
+# Config
+tsconfig.json
+tsup.config.ts
+.eslintrc.*
+.prettierrc.*
+vitest.config.ts
+
+# Dev
+.github/
+.vscode/
+.idea/
+
+# Misc
+*.log
+.DS_Store
+coverage/
+

@@ -1,0 +1,70 @@
+{
+  "name": "@mxp/protocol",
+  "version": "0.1.0",
+  "description": "MXP (Mesh eXchange Protocol) - High-performance binary protocol for AI agent communication",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./a2a": {
+      "import": "./dist/a2a/index.mjs",
+      "require": "./dist/a2a/index.js",
+      "types": "./dist/a2a/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src/**/*.ts",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mxp",
+    "protocol",
+    "ai-agents",
+    "a2a",
+    "agent-to-agent",
+    "binary-protocol",
+    "high-performance",
+    "llm",
+    "streaming",
+    "distributed-tracing"
+  ],
+  "author": "YafaTek <protocol@getmxp.xyz>",
+  "license": "(MIT OR Apache-2.0)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yafatek/mxp-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yafatek/mxp-js/issues"
+  },
+  "homepage": "https://getmxp.xyz",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+
