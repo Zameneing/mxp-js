@@ -1,26 +1,26 @@
 {
   "name": "@mxp-protocol/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "MXP (Mesh eXchange Protocol) - High-performance binary protocol for AI agent communication",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./a2a": {
       "types": "./dist/a2a/index.d.ts",
-      "import": "./dist/a2a/index.mjs",
-      "require": "./dist/a2a/index.js"
+      "import": "./dist/a2a/index.js",
+      "require": "./dist/a2a/index.cjs"
     },
     "./transport": {
       "types": "./dist/transport/index.d.ts",
-      "import": "./dist/transport/index.mjs",
-      "require": "./dist/transport/index.js"
+      "import": "./dist/transport/index.js",
+      "require": "./dist/transport/index.cjs"
     }
   },
   "files": [
