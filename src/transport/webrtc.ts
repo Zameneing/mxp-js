@@ -336,13 +336,20 @@ export class WebRTCTransport {
     }
   }
 
-  // Event registration
+  // Event registration with type-safe handlers
   on(event: 'stateChange', handler: EventHandler<{ peerId: string; state: ConnectionState }>): this;
   on(event: 'message', handler: EventHandler<{ message: Message; peerId: string }>): this;
   on(event: 'error', handler: EventHandler<{ error: Error; peerId?: string }>): this;
   on(event: 'peerConnected', handler: EventHandler<string>): this;
   on(event: 'peerDisconnected', handler: EventHandler<string>): this;
-  on(event: string, handler: EventHandler<unknown>): this {
+  on(
+    event: 'stateChange' | 'message' | 'error' | 'peerConnected' | 'peerDisconnected',
+    handler:
+      | EventHandler<{ peerId: string; state: ConnectionState }>
+      | EventHandler<{ message: Message; peerId: string }>
+      | EventHandler<{ error: Error; peerId?: string }>
+      | EventHandler<string>
+  ): this {
     switch (event) {
       case 'stateChange':
         this.onStateChange = handler as EventHandler<{ peerId: string; state: ConnectionState }>;

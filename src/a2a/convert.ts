@@ -5,8 +5,7 @@
  */
 
 import { Message as MxpMessage, MessageType } from '../message';
-import { encode, decode } from '../codec';
-import { Message, Part, Role } from './types';
+import { Message } from './types';
 import { Task } from './task';
 
 /**

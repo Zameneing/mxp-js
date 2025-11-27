@@ -239,11 +239,11 @@ export class InMemorySignalingHub {
    * Create a signaling provider connected to this hub
    */
   createProvider(localId: string): SignalingProvider {
-    const hub = this;
+    const peers = this.peers;
 
     return {
       async send(message: SignalingMessage): Promise<void> {
-        const handler = hub.peers.get(message.to);
+        const handler = peers.get(message.to);
         if (handler) {
           // Simulate async
           setTimeout(() => handler(message), 0);
@@ -251,7 +251,7 @@ export class InMemorySignalingHub {
       },
 
       onMessage(handler: (message: SignalingMessage) => void): void {
-        hub.peers.set(localId, handler);
+        peers.set(localId, handler);
       },
 
       getLocalId(): string {

@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { Message, Part, Role, toMxp, fromMxp, AgentCard, AgentSkill, Task, TaskState } from '../src/a2a';
+import { Message, Part, Role, toMxp, fromMxp, AgentCard, AgentSkill, Task, TaskState, Artifact } from '../src/a2a';
 
 describe('A2A Message', () => {
   it('should create a user text message', () => {
@@ -124,7 +124,6 @@ describe('Task', () => {
 
   it('should track artifacts', () => {
     const task = new Task();
-    const { Artifact } = require('../src/a2a/task');
     
     task.addArtifact(Artifact.text('result', 'The answer is 42'));
     

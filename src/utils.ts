@@ -53,13 +53,16 @@ export function bigIntToBytes(value: bigint, length: number): Uint8Array {
  */
 export function xxhash64(data: Uint8Array): bigint {
   // Simplified hash - in production use xxhash-wasm or similar
+  // Mask to ensure 64-bit result
+  const mask64 = 0xffffffffffffffffn;
   let hash = 0n;
   const prime1 = 11400714785074694791n;
   const prime2 = 14029467366897019727n;
 
   for (let i = 0; i < data.length; i++) {
     hash ^= BigInt(data[i]) * prime1;
-    hash = ((hash << 31n) | (hash >> 33n)) * prime2;
+    hash = (hash & mask64);
+    hash = (((hash << 31n) | (hash >> 33n)) * prime2) & mask64;
   }
 
   return hash;

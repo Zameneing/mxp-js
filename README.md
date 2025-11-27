@@ -207,11 +207,11 @@ sequenceDiagram
 ## Installation
 
 ```bash
+pnpm add @mxp/protocol
+# or
 npm install @mxp/protocol
 # or
 yarn add @mxp/protocol
-# or
-pnpm add @mxp/protocol
 ```
 
 ## Quick Start

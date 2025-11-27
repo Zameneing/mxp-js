@@ -95,7 +95,7 @@ export interface JsonRpcRequestOptions {
  * JSON-RPC Request
  */
 export class JsonRpcRequest {
-  readonly jsonrpc: '2.0' = '2.0';
+  readonly jsonrpc = '2.0' as const;
   readonly method: string;
   readonly params: Record<string, unknown>;
   readonly id: string | number;
@@ -178,7 +178,7 @@ export interface JsonRpcResponseOptions {
  * JSON-RPC Response
  */
 export class JsonRpcResponse {
-  readonly jsonrpc: '2.0' = '2.0';
+  readonly jsonrpc = '2.0' as const;
   readonly id: string | number;
   readonly result?: unknown;
   readonly error?: JsonRpcError;

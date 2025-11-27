@@ -243,7 +243,8 @@ export class Peer {
     }
 
     const { bytes } = encode(message);
-    this.dataChannel.send(bytes);
+    // RTCDataChannel.send accepts Uint8Array in browsers
+    this.dataChannel.send(bytes as unknown as ArrayBuffer);
   }
 
   /**
@@ -253,7 +254,8 @@ export class Peer {
     if (!this.dataChannel || this.dataChannel.readyState !== 'open') {
       throw new Error('Data channel not open');
     }
-    this.dataChannel.send(bytes);
+    // RTCDataChannel.send accepts Uint8Array in browsers
+    this.dataChannel.send(bytes as unknown as ArrayBuffer);
   }
 
   /**
@@ -378,11 +380,17 @@ export class Peer {
     }
   }
 
-  // Event registration
+  // Event registration with type-safe handlers
   on(event: 'stateChange', handler: EventHandler<ConnectionState>): void;
   on(event: 'message', handler: EventHandler<Message>): void;
   on(event: 'error', handler: EventHandler<Error>): void;
-  on(event: string, handler: EventHandler<unknown>): void {
+  on(
+    event: 'stateChange' | 'message' | 'error',
+    handler:
+      | EventHandler<ConnectionState>
+      | EventHandler<Message>
+      | EventHandler<Error>
+  ): void {
     switch (event) {
       case 'stateChange':
         this.onStateChange = handler as EventHandler<ConnectionState>;
