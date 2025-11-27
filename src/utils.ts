@@ -7,7 +7,7 @@
 // In older Node.js, we need to use the crypto module
 let cryptoImpl: Crypto;
 
-if (typeof globalThis.crypto !== 'undefined' && globalThis.crypto.getRandomValues) {
+if (typeof globalThis !== 'undefined' && typeof globalThis.crypto !== 'undefined') {
   cryptoImpl = globalThis.crypto;
 } else {
   // Node.js environment - use require for sync loading
