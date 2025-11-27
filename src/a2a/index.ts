@@ -6,7 +6,7 @@
  *
  * @example
  * ```typescript
- * import { Message, toMxp, fromMxp, AgentCard } from '@mxp/protocol/a2a';
+ * import { Message, toMxp, fromMxp, AgentCard } from '@mxp-protocol/core/a2a';
  *
  * // Create an A2A message
  * const msg = Message.userText('Hello, agent!');

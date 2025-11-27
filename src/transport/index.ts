@@ -5,7 +5,7 @@
  *
  * @example
  * ```typescript
- * import { WebRTCTransport, WebSocketSignaling } from '@mxp/protocol/transport';
+ * import { WebRTCTransport, WebSocketSignaling } from '@mxp-protocol/core/transport';
  *
  * // Create signaling provider
  * const signaling = new WebSocketSignaling('ws://signal.example.com', 'my-peer-id');

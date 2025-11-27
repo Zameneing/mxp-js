@@ -5,7 +5,7 @@
  *
  * @example
  * ```typescript
- * import { Message, MessageType, encode, decode } from '@mxp/protocol';
+ * import { Message, MessageType, encode, decode } from '@mxp-protocol/core';
  *
  * // Create a message
  * const msg = new Message(MessageType.Call, Buffer.from('Hello, agent!'));

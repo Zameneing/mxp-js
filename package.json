@@ -1,5 +1,5 @@
 {
-  "name": "@mxp/protocol",
+  "name": "@mxp-protocol/core",
   "version": "0.1.0",
   "type": "module",
   "description": "MXP (Mesh eXchange Protocol) - High-performance binary protocol for AI agent communication",

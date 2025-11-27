@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-#### Core Protocol (`@mxp/protocol`)
+#### Core Protocol (`@mxp-protocol/core`)
 - `Message` class with factory methods (`call`, `response`, `error`, `ping`, `pong`)
 - `MessageType` enum (Call, Response, Error, Stream*, Agent*, Ping, Pong)
 - `MessageFlags` enum (Encrypted, Compressed, RequiresAck, etc.)
@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Trace ID and Message ID generation
 - XXHash64-based checksums
 
-#### A2A Compatibility (`@mxp/protocol/a2a`)
+#### A2A Compatibility (`@mxp-protocol/core/a2a`)
 - `Message` with `Part` support (text, file, data)
 - `Task` with status tracking and `Artifact` outputs
 - `TaskState` lifecycle (Submitted → Working → Completed/Failed)
@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `JsonRpcRequest`/`JsonRpcResponse` for HTTP gateway mode
 - Standard A2A error codes
 
-#### WebRTC Transport (`@mxp/protocol/transport`)
+#### WebRTC Transport (`@mxp-protocol/core/transport`)
 - `WebRTCTransport` - multi-peer connection manager
 - `Peer` - single peer connection with DataChannel
 - Signaling providers:

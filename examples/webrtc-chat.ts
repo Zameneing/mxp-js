@@ -147,8 +147,8 @@ console.log('');
 console.log('📝 Actual implementation would be:');
 console.log('');
 console.log(`
-import { WebRTCTransport, WebSocketSignaling } from '@mxp/protocol/transport';
-import { Message } from '@mxp/protocol';
+import { WebRTCTransport, WebSocketSignaling } from '@mxp-protocol/core/transport';
+import { Message } from '@mxp-protocol/core';
 
 // Connect to signaling server
 const signaling = new WebSocketSignaling('ws://signal.example.com', '${peerId}');

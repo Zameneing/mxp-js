@@ -2,7 +2,7 @@
 
 **High-performance binary protocol for AI agent communication**
 
-[![npm version](https://badge.fury.io/js/%40mxp%2Fprotocol.svg)](https://www.npmjs.com/package/@mxp/protocol)
+[![npm version](https://badge.fury.io/js/%40mxp-protocol%2Fcore.svg)](https://www.npmjs.com/package/@mxp-protocol/core)
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
 
 > The JavaScript/TypeScript implementation of [MXP Protocol](https://github.com/yafatek/mxp-protocol)
@@ -24,7 +24,7 @@
 │  │   Message   │  │    Task     │  │  AgentCard  │  │     JSON-RPC        │ │
 │  │   + Part    │  │  + Artifact │  │  + Skills   │  │  Request/Response   │ │
 │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────────┘ │
-│                              @mxp/protocol/a2a                               │
+│                              @mxp-protocol/core/a2a                               │
 └─────────────────────────────────────────────────────────────────────────────┘
                                        │
                             toMxp() ◄──┴──► fromMxp()
@@ -42,7 +42,7 @@
 │  │                       Variable-length Payload                        │    │
 │  │                    (Your data - any binary format)                   │    │
 │  └─────────────────────────────────────────────────────────────────────┘    │
-│                               @mxp/protocol                                  │
+│                               @mxp-protocol/core                                  │
 └─────────────────────────────────────────────────────────────────────────────┘
                                        │
                             encode() ◄─┴─► decode()
@@ -53,7 +53,7 @@
 │  │    Signaling  │    │     Peer      │    │      RTCDataChannel          │ │
 │  │   (WebSocket) │───►│  Connection   │───►│  (Reliable / Unreliable)     │ │
 │  └───────────────┘    └───────────────┘    └──────────────────────────────┘ │
-│                            @mxp/protocol/transport                           │
+│                            @mxp-protocol/core/transport                           │
 └─────────────────────────────────────────────────────────────────────────────┘
                                        │
                                        ▼
@@ -171,7 +171,7 @@ sequenceDiagram
 ## 📦 Module Structure
 
 ```
-@mxp/protocol
+@mxp-protocol/core
 │
 ├── Core ─────────────────────────────────────────────────
 │   ├── Message          # MXP message class
@@ -207,11 +207,11 @@ sequenceDiagram
 ## Installation
 
 ```bash
-pnpm add @mxp/protocol
+pnpm add @mxp-protocol/core
 # or
-npm install @mxp/protocol
+npm install @mxp-protocol/core
 # or
-yarn add @mxp/protocol
+yarn add @mxp-protocol/core
 ```
 
 ## Quick Start
@@ -219,7 +219,7 @@ yarn add @mxp/protocol
 ### Basic Usage
 
 ```typescript
-import { Message, MessageType, encode, decode } from '@mxp/protocol';
+import { Message, MessageType, encode, decode } from '@mxp-protocol/core';
 
 // Create a message
 const msg = Message.call('Hello, agent!');
@@ -237,7 +237,7 @@ console.log(`Payload: ${decoded.payloadAsString()}`);
 ### A2A Compatibility
 
 ```typescript
-import { Message, toMxp, fromMxp, AgentCard } from '@mxp/protocol/a2a';
+import { Message, toMxp, fromMxp, AgentCard } from '@mxp-protocol/core/a2a';
 
 // Create an A2A message
 const msg = Message.userText('Search for Rust tutorials');
@@ -257,7 +257,7 @@ console.log(`Text: ${message?.textContent()}`);
 ### Agent Discovery
 
 ```typescript
-import { AgentCard, AgentSkill } from '@mxp/protocol/a2a';
+import { AgentCard, AgentSkill } from '@mxp-protocol/core/a2a';
 
 // Create an agent card with MXP support
 const card = AgentCard.withMxp(
@@ -302,7 +302,7 @@ Perfect for LLM token-by-token output:
 ```
 
 ```typescript
-import { Message, toMxpStreamOpen, toMxpStreamChunk, toMxpStreamClose } from '@mxp/protocol/a2a';
+import { Message, toMxpStreamOpen, toMxpStreamChunk, toMxpStreamClose } from '@mxp-protocol/core/a2a';
 
 // Open stream
 const openMsg = toMxpStreamOpen(Message.userText('Write a poem'));
@@ -345,7 +345,7 @@ For long-running operations with status updates:
 ```
 
 ```typescript
-import { Task, TaskState, Artifact } from '@mxp/protocol/a2a';
+import { Task, TaskState, Artifact } from '@mxp-protocol/core/a2a';
 
 // Create task
 const task = new Task();
@@ -365,8 +365,8 @@ task.setStatus(TaskState.Completed);
 ### WebRTC Transport (Peer-to-Peer)
 
 ```typescript
-import { WebRTCTransport, WebSocketSignaling } from '@mxp/protocol/transport';
-import { Message } from '@mxp/protocol';
+import { WebRTCTransport, WebSocketSignaling } from '@mxp-protocol/core/transport';
+import { Message } from '@mxp-protocol/core';
 
 // Connect to signaling server
 const signaling = new WebSocketSignaling('ws://signal.example.com', 'my-peer-id');
@@ -406,7 +406,7 @@ const provider = hub.createProvider('peer-id');
 
 ## API Reference
 
-### Core Module (`@mxp/protocol`)
+### Core Module (`@mxp-protocol/core`)
 
 | Export | Description |
 |--------|-------------|
@@ -417,7 +417,7 @@ const provider = hub.createProvider('peer-id');
 | `decode(bytes)` | Decode message from binary |
 | `generateTraceId()` | Generate random trace ID |
 
-### A2A Module (`@mxp/protocol/a2a`)
+### A2A Module (`@mxp-protocol/core/a2a`)
 
 | Export | Description |
 |--------|-------------|
@@ -432,7 +432,7 @@ const provider = hub.createProvider('peer-id');
 | `JsonRpcRequest` | JSON-RPC request |
 | `JsonRpcResponse` | JSON-RPC response |
 
-### Transport Module (`@mxp/protocol/transport`)
+### Transport Module (`@mxp-protocol/core/transport`)
 
 | Export | Description |
 |--------|-------------|

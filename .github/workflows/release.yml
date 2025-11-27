@@ -92,9 +92,9 @@ jobs:
             ## Installation
             
             ```bash
-            pnpm add @mxp/protocol@${{ github.ref_name }}
+            pnpm add @mxp-protocol/core@${{ github.ref_name }}
             # or
-            npm install @mxp/protocol@${{ github.ref_name }}
+            npm install @mxp-protocol/core@${{ github.ref_name }}
             ```
             
             See [CHANGELOG](https://github.com/yafatek/mxp-js/blob/main/CHANGELOG.md) for details.
