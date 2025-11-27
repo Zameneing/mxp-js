@@ -107,8 +107,9 @@ sequenceDiagram
     S->>A: ICE Candidate
     
     Note over A,B: 3. Direct P2P Connection
-    A<-->B: RTCDataChannel (MXP Messages)
-    Note over A,B: No server in the middle!
+    A->>B: MXP Message
+    B->>A: MXP Message
+    Note over A,B: Direct P2P via RTCDataChannel<br/>No server in the middle!
 ```
 
 ---
